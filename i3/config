@@ -2,6 +2,14 @@ set $mod Mod4
 
 font pango:monospace 12
 
+
+# xrandr_stuff
+
+exec --no-startup-id xrandr --auto --output eDP1 --mode 1920x1080 --right-of DP1-2
+
+# key switching on alt + space
+exec --no-startup-id setxkbmap -model pc104 -layout us,ru -variant ,, -option grp:alt_space_toggle
+
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex-autostart --autostart --environment i3
@@ -18,11 +26,14 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 
 # other
+exec --no-startup-id unclutter -idle 2 -root &
 exec --no-startup-id polybar
-exec --no-startup-id alacritty -o font.size=19 -e tmux
-exec_always --no-startup-id picom &
-# exec_always --no-startup-id xrandr --output Virtual1 --mode 1920x1080 & 
-exec_always --no-startup-id xrandr --output Virtual1 --mode 1024&768 &
+exec --no-startup-id polybar -c /home/vostorg/.config/polybar/config_second.ini
+# exec --no-startup-id alacritty -o font.size=9 -e tmux
+exec --no-startup-id kitty
+exec --no-startup-id udiskie -a -n -t & 
+exec_always --no-startup-id picom --fade-in-step=1 --fade-out-step=1 &
+# exec_always --no-startup-id xrandr --output Virtual1 --mode 1024&768 &
 exec_always --no-startup-id nitrogen --restore & 
 
 # Use pactl to adjust volume in PulseAudio.
@@ -36,7 +47,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty -o font.size=19
+# bindsym $mod+Return exec alacritty -o font.size=9
+bindsym $mod+Return exec kitty
 # kill focused window
 bindsym $mod+q kill
 
@@ -106,12 +118,19 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
+# workspace 2 output DP1-2
+workspace 1 output DP1-2
+workspace 2 output DP1-2
+workspace 3 output eDP1
+workspace 4 output eDP1
+workspace 5 output DP1-2
+
 # switch to workspace
 bindsym $mod+u workspace number $ws1
 bindsym $mod+i workspace number $ws2
 bindsym $mod+o workspace number $ws3
 bindsym $mod+p workspace number $ws4
-bindsym $mod+5 workspace number $ws5
+bindsym $mod+y workspace number $ws5
 bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
